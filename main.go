@@ -54,9 +54,45 @@ func runPolicyWithKwctl() *demo.Run {
 	))
 
 	r.Step(demo.S(
-		"Print raw secret contents",
+		"Inspect the secret with kubectl",
 	), demo.S(
 		"kubectl get secret db-user-pass -o json | jq",
+	))
+
+	r.Step(demo.S(
+		"Inspect the secret with kubectl-decoder",
+	), demo.S(
+		"kubectl decoder secret db-user-pass",
+	))
+
+	r.Step(demo.S(
+		"Inspect an existing secret that contains a Kubernetes TLS-type secret with kubectl",
+	), demo.S(
+		"kubectl get secret k3s-serving -n kube-system -o json | jq",
+	))
+
+	r.Step(demo.S(
+		"Inspect an existing secret that contains a Kubernetes TLS-type secret with kubectl-decoder",
+	), demo.S(
+		"kubectl decoder secret k3s-serving -n kube-system",
+	))
+
+	r.Step(demo.S(
+		"Pull kubectl-kubewarden plugin",
+	), demo.S(
+		"krew-wasm pull ghcr.io/flavio/krew-wasm-plugins/kubewarden:latest",
+	))
+
+	r.Step(demo.S(
+		"List plugins",
+	), demo.S(
+		"krew-wasm list",
+	))
+
+	r.Step(demo.S(
+		"Run kubectl-kubewarden plugin",
+	), demo.S(
+		"kubectl kubewarden events",
 	))
 
 	r.Setup(setupKrewWasm)
